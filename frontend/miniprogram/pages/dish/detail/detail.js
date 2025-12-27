@@ -34,6 +34,7 @@ Page({
     selectedTaste: '不辣', // 默认口味
     selectedSize: '中份', // 默认份量
     selectedExtras: [], // 选中的加料
+    totalPrice: 0, // 总价
     
     // 可选项列表
     tasteOptions: [
@@ -80,6 +81,7 @@ Page({
         image: imageName ? `/images/dishes/${imageName}` : '/images/common/icon_search.png'
       };
       this.setData({ dish: processedDish, loading: false });
+      this.updateTotalPrice(); // 初始化总价
     }).catch(err => {
       console.error('加载菜品详情失败', err);
       // 即使网络请求失败，也使用本地数据显示基本信息
@@ -105,12 +107,14 @@ Page({
   decreaseQuantity() {
     if (this.data.quantity > 1) {
       this.setData({ quantity: this.data.quantity - 1 });
+      this.updateTotalPrice();
     }
   },
 
   // 数量增加
   increaseQuantity() {
     this.setData({ quantity: this.data.quantity + 1 });
+    this.updateTotalPrice();
   },
 
   // 选择口味
@@ -123,21 +127,35 @@ Page({
   selectSize(e) {
     const size = e.currentTarget.dataset.value;
     this.setData({ selectedSize: size });
+    this.updateTotalPrice();
   },
 
   // 切换加料
   toggleExtra(e) {
+    console.log('[toggleExtra] 被点击', e);
     const extraId = e.currentTarget.dataset.id;
+    console.log('[toggleExtra] extraId:', extraId);
+    
     const extras = this.data.selectedExtras.slice();
     const index = extras.indexOf(extraId);
     
     if (index > -1) {
       extras.splice(index, 1);
+      console.log('[toggleExtra] 移除加料:', extraId);
     } else {
       extras.push(extraId);
+      console.log('[toggleExtra] 添加加料:', extraId);
     }
     
+    console.log('[toggleExtra] 更新后的 extras:', extras);
     this.setData({ selectedExtras: extras });
+    this.updateTotalPrice();
+  },
+
+  // 更新总价
+  updateTotalPrice() {
+    const totalPrice = this.calculateTotalPrice();
+    this.setData({ totalPrice });
   },
 
   // 计算总价

@@ -102,7 +102,7 @@
     <!-- 总价显示 -->
     <view class="price-summary">
       <text class="summary-label">合计：</text>
-      <text class="summary-price">￥{{calculateTotalPrice()}}</text>
+      <text class="summary-price">￥{{totalPrice}}</text>
     </view>
   </view>
 

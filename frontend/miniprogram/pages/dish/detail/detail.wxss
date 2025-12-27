@@ -172,6 +172,9 @@
   display: flex;
   align-items: center;
   gap: 8rpx;
+  min-height: 60rpx;
+  cursor: pointer;
+  user-select: none;
 }
 
 .option-item.selected {

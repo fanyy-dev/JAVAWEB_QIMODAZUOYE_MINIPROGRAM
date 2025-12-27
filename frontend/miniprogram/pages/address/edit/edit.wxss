@@ -1,0 +1,111 @@
+.container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding-bottom: 100rpx;
+}
+
+/* 表单标题 */
+.form-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  padding: 30rpx 0;
+  background-color: #fff;
+  border-bottom: 1rpx solid #eee;
+}
+
+/* 表单 */
+.address-form {
+  background-color: #fff;
+  margin-top: 20rpx;
+  padding: 20rpx 30rpx;
+}
+
+/* 表单项 */
+.form-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 25rpx 0;
+  border-bottom: 1rpx solid #eee;
+}
+
+.form-item:last-child {
+  border-bottom: none;
+}
+
+/* 表单标签 */
+.form-label {
+  width: 140rpx;
+  font-size: 28rpx;
+  color: #333;
+  padding-top: 15rpx;
+}
+
+/* 表单输入框 */
+.form-input {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+  padding: 15rpx 0;
+}
+
+/* 所在地区选择 */
+.region-select {
+  flex: 1;
+  position: relative;
+}
+
+.region-select .form-input {
+  padding-right: 50rpx;
+}
+
+.select-arrow {
+  position: absolute;
+  right: 10rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20rpx;
+  color: #999;
+}
+
+/* 详细地址文本域 */
+.form-textarea {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+  min-height: 120rpx;
+  padding: 15rpx 0;
+  line-height: 1.5;
+}
+
+/* 默认地址开关 */
+.default-address {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.switch-container {
+  padding: 10rpx 0;
+}
+
+/* 保存按钮 */
+.save-btn {
+  position: fixed;
+  bottom: 30rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ff6b6b;
+  color: #fff;
+  padding: 25rpx 100rpx;
+  border-radius: 50rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  box-shadow: 0 4rpx 20rpx rgba(255, 107, 107, 0.3);
+}
+
+.save-btn-text {
+  font-size: 32rpx;
+  font-weight: bold;
+}

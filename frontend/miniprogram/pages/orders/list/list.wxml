@@ -1,0 +1,49 @@
+<view class="container">
+  <!-- 订单状态筛选 -->
+  <view class="status-filter">
+    <view class="status-item {{currentStatus === index ? 'active' : ''}}" wx:for="{{orderStatus}}" wx:key="index" bindtap="onStatusChange" data-index="{{index}}">
+      <text class="status-text">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 订单列表 -->
+  <view class="orders-list">
+    <view class="order-item" wx:for="{{filteredOrders}}" wx:key="id" bindtap="onOrderTap" data-id="{{item.id}}">
+      <!-- 订单头部 -->
+      <view class="order-header">
+        <text class="order-no">订单号：{{item.orderNo}}</text>
+        <text class="order-status" wx:if="{{item.status === 1}}">待付款</text>
+        <text class="order-status" wx:elif="{{item.status === 2}}">待收货</text>
+        <text class="order-status" wx:elif="{{item.status === 3}}">已完成</text>
+        <text class="order-status" wx:elif="{{item.status === 4}}">已取消</text>
+      </view>
+
+      <!-- 订单商品列表 -->
+      <view class="order-items">
+        <view class="order-item-row" wx:for="{{item.orderItems}}" wx:for-item="dish" wx:key="index">
+          <image src="{{dish.image}}" class="item-image"></image>
+          <view class="item-info">
+            <text class="item-name">{{dish.dishName}}</text>
+            <text class="item-price">¥{{dish.price}}</text>
+          </view>
+          <text class="item-quantity">x{{dish.quantity}}</text>
+        </view>
+      </view>
+
+      <!-- 订单底部 -->
+      <view class="order-footer">
+        <text class="order-time">{{item.createTime}}</text>
+        <view class="order-total">
+          <text class="total-text">合计：</text>
+          <text class="total-price">¥{{item.totalPrice}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空订单提示 -->
+  <view class="empty-orders" wx:if="{{filteredOrders.length === 0 && !loading}}">
+    <view class="empty-icon">📦</view>
+    <text class="empty-text">暂无订单</text>
+  </view>
+</view>

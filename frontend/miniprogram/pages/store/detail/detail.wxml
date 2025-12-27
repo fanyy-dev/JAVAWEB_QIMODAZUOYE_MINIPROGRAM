@@ -1,0 +1,63 @@
+<view class="container">
+  <!-- 门店图片 -->
+  <view class="store-image-container">
+    <image class="store-image" src="{{store.imageUrl || '/images/common/icon_search.png'}}" mode="aspectFill"></image>
+    <view class="store-status" wx:if="{{store.status === 1}}">营业中</view>
+    <view class="store-status closed" wx:else>已停业</view>
+  </view>
+
+  <!-- 门店基本信息 -->
+  <view class="info-container">
+    <view class="store-name">{{store.storeName || '加载中...'}}</view>
+    <view class="store-rating">评分: {{store.rating || 0.0}} ★</view>
+    <view class="store-type">{{store.storeType || '其他'}}</view>
+    <view class="store-meta">
+      <view class="meta-item">
+        <image class="meta-icon" src="/images/common/icon_search.png" mode="aspectFit"></image>
+        <text>{{store.address || '暂无地址'}}</text>
+      </view>
+      <view class="meta-item">
+        <image class="meta-icon" src="/images/common/icon_search.png" mode="aspectFit"></image>
+        <text>{{store.phone || '暂无电话'}}</text>
+      </view>
+      <view class="meta-item">
+        <image class="meta-icon" src="/images/common/icon_search.png" mode="aspectFit"></image>
+        <text>人均 ¥{{store.avgPrice || 0}}</text>
+      </view>
+      <view class="meta-item">
+        <image class="meta-icon" src="/images/common/icon_search.png" mode="aspectFit"></image>
+        <text>{{store.businessHours || '暂无时间'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 门店描述 -->
+  <view class="description-container">
+    <view class="section-title">门店介绍</view>
+    <view class="description-content">{{store.description || '暂无介绍'}}</view>
+  </view>
+
+  <!-- 门店标签 -->
+  <view class="tags-container" wx:if="{{store.tags}}">
+    <view class="section-title">门店特色</view>
+    <view class="tags-list">
+      <view class="tag" wx:for="{{store.tags.split(',')}}" wx:key="index" wx:if="{{item}}">{{item}}</view>
+    </view>
+  </view>
+
+  <!-- 操作栏 -->
+  <view class="action-bar">
+    <view class="action-btn phone" bindtap="makePhoneCall">
+      <image class="btn-icon" src="/images/common/icon_search.png" mode="aspectFit"></image>
+      <text>联系商家</text>
+    </view>
+    <view class="action-btn navigate" bindtap="navigateToStore">
+      <image class="btn-icon" src="/images/common/icon_search.png" mode="aspectFit"></image>
+      <text>导航到店</text>
+    </view>
+    <view class="action-btn menu" bindtap="viewStoreDishes">
+      <image class="btn-icon" src="/images/common/icon_search.png" mode="aspectFit"></image>
+      <text>查看菜单</text>
+    </view>
+  </view>
+</view>

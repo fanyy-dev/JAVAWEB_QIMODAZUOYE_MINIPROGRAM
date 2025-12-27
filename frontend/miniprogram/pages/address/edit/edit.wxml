@@ -1,0 +1,47 @@
+<view class="container">
+  <!-- 表单标题 -->
+  <view class="form-title">{{isEditing ? '编辑地址' : '新增地址'}}</view>
+
+  <!-- 表单内容 -->
+  <form class="address-form">
+    <!-- 收货人 -->
+    <view class="form-item">
+      <text class="form-label">收货人</text>
+      <input class="form-input" placeholder="请输入收货人姓名" value="{{formData.name}}" bindinput="onInputChange" data-field="name"></input>
+    </view>
+
+    <!-- 手机号码 -->
+    <view class="form-item">
+      <text class="form-label">手机号码</text>
+      <input class="form-input" placeholder="请输入手机号码" type="number" value="{{formData.phone}}" bindinput="onInputChange" data-field="phone"></input>
+    </view>
+
+    <!-- 所在地区 -->
+    <view class="form-item">
+      <text class="form-label">所在地区</text>
+      <view class="region-select">
+        <input class="form-input" placeholder="请选择所在地区" value="{{formData.province}}{{formData.city}}{{formData.district}}" disabled></input>
+        <view class="select-arrow">▼</view>
+      </view>
+    </view>
+
+    <!-- 详细地址 -->
+    <view class="form-item">
+      <text class="form-label">详细地址</text>
+      <textarea class="form-textarea" placeholder="请输入详细地址" value="{{formData.detail}}" bindinput="onInputChange" data-field="detail" auto-height></textarea>
+    </view>
+
+    <!-- 默认地址 -->
+    <view class="form-item default-address">
+      <text class="form-label">默认地址</text>
+      <view class="switch-container">
+        <switch checked="{{formData.isDefault}}" bindchange="onToggleDefault"></switch>
+      </view>
+    </view>
+  </form>
+
+  <!-- 保存按钮 -->
+  <view class="save-btn" bindtap="onSaveAddress">
+    <text class="save-btn-text">保存</text>
+  </view>
+</view>

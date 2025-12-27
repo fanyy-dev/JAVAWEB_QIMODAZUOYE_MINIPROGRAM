@@ -1,0 +1,72 @@
+<view class="container">
+  <!-- 登录提示 -->
+  <view class="login-prompt" wx:if="{{!isLoggedIn}}">
+    <view class="prompt-content">
+      <view class="prompt-icon">🛒</view>
+      <view class="prompt-text">登录后查看购物车</view>
+      <button class="login-btn" bindtap="goToLogin">登录</button>
+    </view>
+  </view>
+
+  <!-- 购物车列表 -->
+  <view class="cart-content" wx:else>
+    <!-- 全选和清空 -->
+    <view class="cart-header" wx:if="{{cartItems.length > 0}}">
+      <view class="select-all" bindtap="toggleSelectAll">
+        <text class="checkbox">{{isAllSelected ? '☑' : '☐'}}</text>
+        <text class="select-all-text">全选</text>
+      </view>
+      <view class="clear-cart" bindtap="clearCart">清空购物车</view>
+    </view>
+
+    <!-- 购物车商品列表 -->
+    <view class="cart-list" wx:if="{{cartItems.length > 0}}">
+      <view class="cart-item" wx:for="{{cartItems}}" wx:key="id">
+        <!-- 选择框 -->
+        <view class="item-select" bindtap="toggleSelect" data-id="{{item.id}}">
+          <text class="checkbox">{{item.selected ? '☑' : '☐'}}</text>
+        </view>
+
+        <!-- 商品图片 -->
+        <image class="item-image" src="{{item.image || '/images/common/icon_search.png'}}" mode="aspectFill"></image>
+
+        <!-- 商品信息 -->
+        <view class="item-info">
+          <view class="item-name">{{item.dishName}}</view>
+          <view class="item-desc">{{item.description || '暂无描述'}}</view>
+          <view class="item-bottom">
+            <view class="item-price">¥{{item.price}}</view>
+            <view class="quantity-controls">
+              <view class="quantity-btn minus" bindtap="decreaseQuantity" data-id="{{item.id}}">-</view>
+              <view class="quantity-value">{{item.quantity}}</view>
+              <view class="quantity-btn plus" bindtap="increaseQuantity" data-id="{{item.id}}">+</view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 删除按钮 -->
+        <view class="item-delete" bindtap="removeItem" data-id="{{item.id}}">
+          <text class="delete-icon">🗑️</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空购物车 -->
+    <view class="empty-cart" wx:else>
+      <view class="empty-icon">🛒</view>
+      <view class="empty-text">购物车是空的</view>
+      <button class="go-shopping-btn" bindtap="goShopping">去逛逛</button>
+    </view>
+
+    <!-- 结算栏 -->
+    <view class="checkout-bar" wx:if="{{cartItems.length > 0 && selectedCount > 0}}">
+      <view class="total-info">
+        <view class="total-text">合计：</view>
+        <view class="total-price">¥{{totalPrice}}</view>
+      </view>
+      <view class="checkout-btn" bindtap="checkout">
+        结算({{selectedCount}})
+      </view>
+    </view>
+  </view>
+</view>

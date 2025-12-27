@@ -1,0 +1,84 @@
+<!-- pages/index/index.wxml -->
+<view class="container">
+
+
+
+
+  <!-- 分类导航 -->
+  <view class="category-nav">
+    <view class="category-item" wx:for="{{categories}}" wx:key="id" bindtap="onCategoryTap" data-id="{{item.id}}">
+      <image src="{{item.icon}}" class="category-icon"></image>
+      <text class="category-name">{{item.name}}</text>
+    </view>
+  </view>
+
+  <!-- 特价团购 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">特价团</text>
+      <text class="section-more" bindtap="onMoreDishTap">更多 ></text>
+    </view>
+    <scroll-view scroll-x class="group-buy-scroll">
+      <view class="group-buy-item card" wx:for="{{specialOfferDishes}}" wx:key="id" bindtap="onDishTap" data-id="{{item.id}}">
+        <image src="{{item.image}}" class="group-buy-image"></image>
+        <view class="group-buy-info">
+          <text class="group-buy-name text-ellipsis">{{item.dishName}}</text>
+          <view class="group-buy-price">
+            <text class="price-symbol">¥</text>
+            <text class="price-integer">{{item.price}}</text>
+            <text class="price-original">¥{{item.originalPrice || item.price}}</text>
+          </view>
+          <view class="group-buy-sales">{{item.saleCount || 0}}人已团</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 推荐菜品 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">推荐菜品</text>
+      <text class="section-more" bindtap="onMoreDishTap">更多 ></text>
+    </view>
+    <view class="dish-list">
+      <view class="dish-item card" wx:for="{{recommendDishes}}" wx:key="id" bindtap="onDishTap" data-id="{{item.id}}">
+        <image src="{{item.image}}" class="dish-image"></image>
+        <view class="dish-info">
+          <text class="dish-name">{{item.dishName}}</text>
+          <text class="dish-desc text-ellipsis">{{item.description}}</text>
+          <view class="dish-bottom">
+            <view class="price">
+              <text class="price-symbol">¥</text>
+              <text class="price-integer">{{item.price}}</text>
+            </view>
+            <view class="dish-sales">已售{{item.saleCount}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 附近门店 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">附近门店</text>
+      <text class="section-more" bindtap="onMoreStoreTap">更多 ></text>
+    </view>
+    <view class="store-list">
+      <view class="store-item card" wx:for="{{stores}}" wx:key="id" bindtap="onStoreTap" data-id="{{item.id}}">
+        <image src="{{item.images[0]}}" class="store-image"></image>
+        <view class="store-info">
+          <text class="store-name">{{item.storeName}}</text>
+          <view class="store-tags">
+            <text class="tag tag-primary" wx:for="{{item.tagList}}" wx:key="index" wx:for-item="tag">{{tag}}</text>
+          </view>
+          <view class="store-meta">
+            <text class="store-rating">⭐ {{item.rating}}</text>
+            <text class="store-price">人均¥{{item.avgPrice}}</text>
+            <text class="store-address">{{item.address}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

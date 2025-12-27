@@ -1,0 +1,80 @@
+<view class="container">
+  <view class="header">
+    <view class="header-title">积分商城</view>
+    <view class="points-balance">
+      <view class="points-icon">🏆</view>
+      <view class="points-text">我的积分: {{userPoints}}</view>
+    </view>
+  </view>
+
+  <view class="tabs">
+    <view 
+      class="tab-item {{currentTab === 'all' ? 'active' : ''}}" 
+      data-tab="all" 
+      bindtap="onTabChange"
+    >
+      全部
+    </view>
+    <view 
+      class="tab-item {{currentTab === 'coupon' ? 'active' : ''}}" 
+      data-tab="coupon" 
+      bindtap="onTabChange"
+    >
+      优惠券
+    </view>
+    <view 
+      class="tab-item {{currentTab === 'gift' ? 'active' : ''}}" 
+      data-tab="gift" 
+      bindtap="onTabChange"
+    >
+      礼品
+    </view>
+    <view 
+      class="tab-item {{currentTab === 'meal' ? 'active' : ''}}" 
+      data-tab="meal" 
+      bindtap="onTabChange"
+    >
+      餐品
+    </view>
+  </view>
+
+  <view class="goods-list">
+    <view 
+      class="goods-item" 
+      wx:for="{{filteredGoods}}" 
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onGoodsTap"
+    >
+      <view class="goods-image">
+        <view class="goods-icon">{{item.icon}}</view>
+        <view class="goods-tag" wx:if="{{item.isHot}}">热销</view>
+      </view>
+      <view class="goods-info">
+        <view class="goods-name">{{item.name}}</view>
+        <view class="goods-desc">{{item.description}}</view>
+        <view class="goods-footer">
+          <view class="points">
+            <view class="points-icon">🏆</view>
+            <view class="points-text">{{item.points}}积分</view>
+          </view>
+          <button 
+            class="exchange-btn" 
+            size="mini" 
+            type="warn"
+            disabled="{{userPoints < item.points}}"
+            bindtap="onExchange"
+            data-id="{{item.id}}"
+          >
+            {{userPoints < item.points ? '积分不足' : '兑换'}}
+          </button>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:if="{{filteredGoods.length === 0}}">
+      <view class="empty-icon">🛍️</view>
+      <view class="empty-text">暂无商品</view>
+    </view>
+  </view>
+</view>

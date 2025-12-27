@@ -1,0 +1,76 @@
+<view class="container">
+  <view class="header">
+    <view class="header-title">消息中心</view>
+    <view class="header-actions">
+      <text class="mark-all-read" bindtap="onMarkAllRead">全部标为已读</text>
+      <text class="delete-all" bindtap="onDeleteAll">清空消息</text>
+    </view>
+  </view>
+
+  <view class="message-tabs">
+    <view 
+      class="tab-item {{currentTab === 'all' ? 'active' : ''}}" 
+      data-tab="all" 
+      bindtap="onTabChange"
+    >
+      全部
+      <view class="tab-badge" wx:if="{{allCount > 0}}">{{allCount}}</view>
+    </view>
+    <view 
+      class="tab-item {{currentTab === 'order' ? 'active' : ''}}" 
+      data-tab="order" 
+      bindtap="onTabChange"
+    >
+      订单
+      <view class="tab-badge" wx:if="{{orderCount > 0}}">{{orderCount}}</view>
+    </view>
+    <view 
+      class="tab-item {{currentTab === 'promotion' ? 'active' : ''}}" 
+      data-tab="promotion" 
+      bindtap="onTabChange"
+    >
+      促销
+      <view class="tab-badge" wx:if="{{promotionCount > 0}}">{{promotionCount}}</view>
+    </view>
+    <view 
+      class="tab-item {{currentTab === 'member' ? 'active' : ''}}" 
+      data-tab="member" 
+      bindtap="onTabChange"
+    >
+      会员
+      <view class="tab-badge" wx:if="{{memberCount > 0}}">{{memberCount}}</view>
+    </view>
+  </view>
+
+  <view class="message-list">
+    <view 
+      class="message-item {{item.read ? '' : 'unread'}}" 
+      wx:for="{{filteredMessages}}" 
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onMessageTap"
+    >
+      <view class="message-icon">
+        <view class="icon-wrapper {{item.type}}">
+          <view class="icon-text">{{getMessageIcon(item.type)}}</view>
+        </view>
+      </view>
+      <view class="message-content">
+        <view class="message-title-row">
+          <view class="message-title">{{item.title}}</view>
+          <view class="message-time">{{formatTime(item.createTime)}}</view>
+        </view>
+        <view class="message-desc">{{item.content}}</view>
+      </view>
+      <view class="message-actions">
+        <text class="mark-read" wx:if="{{!item.read}}" bindtap="onMarkRead" data-id="{{item.id}}">标为已读</text>
+        <text class="delete" bindtap="onDelete" data-id="{{item.id}}">删除</text>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:if="{{filteredMessages.length === 0}}">
+      <view class="empty-icon">📭</view>
+      <view class="empty-text">暂无消息</view>
+    </view>
+  </view>
+</view>

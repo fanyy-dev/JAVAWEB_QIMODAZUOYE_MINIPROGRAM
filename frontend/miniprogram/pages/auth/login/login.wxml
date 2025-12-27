@@ -1,0 +1,61 @@
+<view class="container">
+  <view class="login-form">
+    <view class="title">用户登录</view>
+    
+    <view class="wechat-login">
+      <button class="wechat-login-btn" bindtap="onWechatLogin">
+        <image src="/images/common/wechat-icon.png" class="wechat-icon"></image>
+        微信一键登录
+      </button>
+    </view>
+    
+    <view class="divider">
+      <view class="line"></view>
+      <text class="divider-text">或</text>
+      <view class="line"></view>
+    </view>
+    
+    <view class="input-group">
+      <text class="label">用户名</text>
+      <input 
+        class="input" 
+        placeholder="请输入用户名" 
+        bindinput="onUsernameInput" 
+        value="{{username}}"
+      />
+    </view>
+    
+    <view class="input-group">
+      <text class="label">密码</text>
+      <view class="password-input">
+        <input 
+          class="input" 
+          placeholder="请输入密码" 
+          bindinput="onPasswordInput" 
+          password="{{showPassword}}"
+          value="{{password}}"
+        />
+        <text 
+          class="toggle-password" 
+          bindtap="togglePassword"
+        >
+          {{showPassword ? '隐藏' : '显示'}}
+        </text>
+      </view>
+    </view>
+    
+    <button 
+      class="login-btn" 
+      bindtap="onLogin" 
+      disabled="{{!username || !password}}"
+      loading="{{loading}}"
+    >
+      登录
+    </button>
+    
+    <view class="register-link">
+      <text>还没有账号？</text>
+      <navigator url="/pages/auth/register/register" class="link">立即注册</navigator>
+    </view>
+  </view>
+</view>

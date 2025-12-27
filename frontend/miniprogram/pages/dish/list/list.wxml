@@ -1,0 +1,53 @@
+<!-- pages/dish/list/list.wxml -->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input">
+      <icon type="search" size="16" class="search-icon"></icon>
+      <input placeholder="搜索菜品" value="{{keyword}}" bindinput="onSearchInput" bindconfirm="onSearch"></input>
+      <text class="search-btn" bindtap="onSearch">搜索</text>
+    </view>
+  </view>
+
+  <!-- 分类筛选 -->
+  <view class="category-filter">
+    <picker bindchange="onCategoryChange" value="{{categoryId}}">
+      <view class="picker">
+        <text>分类: </text>
+        <text class="category-text">{{currentCategoryName}}</text>
+        <icon type="down" size="14"></icon>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 菜品列表 -->
+  <view class="dish-list">
+    <view class="dish-item" wx:for="{{dishList}}" wx:key="id" bindtap="onDishTap" data-id="{{item.id}}">
+      <image src="{{item.image || 'https://via.placeholder.com/150'}}" class="dish-image" mode="aspectFill"></image>
+      <view class="dish-info">
+        <text class="dish-name">{{item.dishName}}</text>
+        <text class="dish-desc">{{item.description}}</text>
+        <view class="dish-bottom">
+          <text class="price">¥{{item.price}}</text>
+          <text class="sales">月售{{item.monthlySales}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载更多 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 没有更多数据 -->
+  <view class="no-more" wx:if="{{!hasMore && dishList.length > 0}}">
+    <text>没有更多了</text>
+  </view>
+
+  <!-- 空数据 -->
+  <view class="empty" wx:if="{{dishList.length == 0 && !loading}}">
+    <icon type="info" size="60" color="#ccc"></icon>
+    <text>暂无菜品数据</text>
+  </view>
+</view>

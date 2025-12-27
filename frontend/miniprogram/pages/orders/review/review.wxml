@@ -1,0 +1,84 @@
+<!-- pages/orders/review/review.wxml -->
+<view class="container">
+  <!-- 订单信息 -->
+  <view class="order-info">
+    <text class="order-title">订单评价</text>
+    <text class="order-no">订单号：{{orderNo}}</text>
+  </view>
+
+  <!-- 评分区域 -->
+  <view class="rating-section">
+    <view class="rating-item">
+      <text class="rating-label">口味评分</text>
+      <view class="rating-stars">
+        <view 
+          class="star {{tasteRating >= index + 1 ? 'active' : ''}}" 
+          wx:for="{{5}}" 
+          wx:key="index" 
+          bindtap="onTasteRate" 
+          data-value="{{index + 1}}"
+        >★</view>
+      </view>
+    </view>
+    <view class="rating-item">
+      <text class="rating-label">服务评分</text>
+      <view class="rating-stars">
+        <view 
+          class="star {{serviceRating >= index + 1 ? 'active' : ''}}" 
+          wx:for="{{5}}" 
+          wx:key="index" 
+          bindtap="onServiceRate" 
+          data-value="{{index + 1}}"
+        >★</view>
+      </view>
+    </view>
+    <view class="rating-item">
+      <text class="rating-label">环境评分</text>
+      <view class="rating-stars">
+        <view 
+          class="star {{environmentRating >= index + 1 ? 'active' : ''}}" 
+          wx:for="{{5}}" 
+          wx:key="index" 
+          bindtap="onEnvironmentRate" 
+          data-value="{{index + 1}}"
+        >★</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 评价内容 -->
+  <view class="content-section">
+    <textarea 
+      class="content-input" 
+      placeholder="请分享您的用餐体验..." 
+      maxlength="500"
+      value="{{content}}"
+      bindinput="onContentInput"
+    ></textarea>
+    <text class="content-count">{{content.length}}/500</text>
+  </view>
+
+  <!-- 图片上传 -->
+  <view class="image-section">
+    <text class="section-label">添加图片</text>
+    <view class="image-list">
+      <view class="image-item" wx:for="{{images}}" wx:key="index">
+        <image src="{{item}}" mode="aspectFill"></image>
+        <view class="image-delete" bindtap="onDeleteImage" data-index="{{index}}">×</view>
+      </view>
+      <view class="image-add" wx:if="{{images.length < 9}}" bindtap="onChooseImage">
+        <text class="add-icon">+</text>
+        <text class="add-text">添加图片</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 匿名评价 -->
+  <view class="anonymous-section">
+    <text>匿名评价</text>
+    <switch checked="{{anonymous}}" bindchange="onAnonymousChange" color="#ff6b6b"></switch>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-btn" bindtap="onSubmit">提交评价</view>
+</view>

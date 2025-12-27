@@ -1,0 +1,52 @@
+<view class="container">
+  <!-- 优惠券状态筛选 -->
+  <view class="status-filter">
+    <view class="status-item {{currentStatus === index ? 'active' : ''}}" wx:for="{{couponStatus}}" wx:key="index" bindtap="onStatusChange" data-index="{{index}}">
+      <text class="status-text">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 优惠券列表 -->
+  <view class="coupons-list">
+    <view class="coupon-item" wx:for="{{coupons}}" wx:key="id">
+      <!-- 优惠券头部 -->
+      <view class="coupon-header">
+        <text class="coupon-name">{{item.couponName}}</text>
+        <text class="coupon-status" wx:if="{{item.status === 0}}">未使用</text>
+        <text class="coupon-status used" wx:elif="{{item.status === 1}}">已使用</text>
+        <text class="coupon-status expired" wx:elif="{{item.status === 2}}">已过期</text>
+      </view>
+
+      <!-- 优惠券内容 -->
+      <view class="coupon-content">
+        <view class="coupon-discount">
+          <text class="discount-value">
+            {{item.couponType === '折扣券' ? (item.discount/10) : item.discount}}
+          </text>
+          <text class="discount-unit">
+            {{item.couponType === '折扣券' ? '折' : '元'}}
+          </text>
+        </view>
+        <view class="coupon-info">
+          <text class="coupon-type">{{item.couponType}}</text>
+          <text class="coupon-condition">
+            {{item.minAmount > 0 ? '满' + item.minAmount + '元可用' : '无门槛使用'}}
+          </text>
+          <text class="coupon-date">有效期：{{item.startDate}} - {{item.endDate}}</text>
+        </view>
+        <button class="coupon-button" bindtap="onUseCoupon" data-id="{{item.id}}" wx:if="{{item.status === 0}}">
+          立即使用
+        </button>
+        <view class="coupon-button disabled" wx:else>
+          {{item.status === 1 ? '已使用' : '已过期'}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空优惠券提示 -->
+  <view class="empty-coupons" wx:if="{{coupons.length === 0 && !loading}}">
+    <view class="empty-icon">🎫</view>
+    <text class="empty-text">暂无优惠券</text>
+  </view>
+</view>

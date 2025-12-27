@@ -1,0 +1,40 @@
+<view class="container">
+  <!-- 应用信息 -->
+  <view class="app-info">
+    <image src="{{appLogo}}" class="app-logo"></image>
+    <text class="app-name">{{appName}}</text>
+    <text class="app-version">版本号：{{version}}</text>
+    <text class="app-description">{{description}}</text>
+  </view>
+
+  <!-- 功能列表 -->
+  <view class="function-list">
+    <view class="function-item" bindtap="onContactService">
+      <text class="function-label">联系客服</text>
+      <text class="function-arrow">></text>
+    </view>
+    <view class="function-item" bindtap="onAboutDetail">
+      <text class="function-label">关于我们详情</text>
+      <text class="function-arrow">></text>
+    </view>
+    <view class="function-item" bindtap="onCheckUpdate">
+      <text class="function-label">检查更新</text>
+      <text class="function-arrow">></text>
+    </view>
+  </view>
+
+  <!-- 联系信息 -->
+  <view class="contact-info">
+    <text class="contact-label">客服电话：</text>
+    <text class="contact-value">{{contactInfo.customerService}}</text>
+    <text class="contact-label">电子邮箱：</text>
+    <text class="contact-value">{{contactInfo.email}}</text>
+    <text class="contact-label">公司地址：</text>
+    <text class="contact-value">{{contactInfo.address}}</text>
+  </view>
+
+  <!-- 版权信息 -->
+  <view class="copyright">
+    {{copyright}}
+  </view>
+</view>

@@ -1,0 +1,174 @@
+<view class="container">
+  <!-- 游客模式提示 -->
+  <view class="guest-mode" wx:if="{{!isLoggedIn && isGuestMode}}">
+    <view class="guest-notice">当前为游客模式，部分功能受限</view>
+    <view class="guest-actions">
+      <button class="login-btn" bindtap="onQuickLogin">微信一键登录</button>
+      <button class="login-btn-outline" bindtap="onAccountLogin">账号密码登录</button>
+    </view>
+  </view>
+
+  <!-- 未登录状态 -->
+  <view class="login-prompt" wx:if="{{!isLoggedIn && !isGuestMode}}">
+    <view class="login-avatar">
+      <view class="avatar-placeholder">未</view>
+    </view>
+    <view class="login-text">未登录</view>
+    <view class="login-actions">
+      <button class="login-btn" bindtap="onQuickLogin">微信一键登录</button>
+      <button class="login-btn-outline" bindtap="onAccountLogin">账号密码登录</button>
+      <button class="guest-btn" bindtap="onGuestMode">游客模式</button>
+    </view>
+  </view>
+
+  <!-- 用户信息区域（已登录） -->
+  <view class="user-info" wx:if="{{isLoggedIn}}">
+    <view class="avatar">
+      <image src="{{userInfo.avatar || '/images/common/default-avatar.png'}}" class="avatar-img"></image>
+    </view>
+    <view class="user-details">
+      <view class="username-row">
+        <view class="username">{{userInfo.nickname || userInfo.username || '用户'}}</view>
+        <view class="member-level {{userInfo.memberLevel || 'NORMAL'}}">{{memberLevelText}}</view>
+      </view>
+      <view class="growth-info">
+        <view class="growth-value">成长值: {{userInfo.growthValue || 0}}</view>
+        <view class="points">积分: {{userInfo.points || 0}}</view>
+      </view>
+      <view class="taste-preference" wx:if="{{userInfo.tastePreference}}">
+        <text>口味偏好: {{userInfo.tastePreference}}</text>
+      </view>
+    </view>
+    <view class="arrow" bindtap="onEditProfile">
+      <view class="arrow-text">></view>
+    </view>
+  </view>
+
+  <!-- 会员权益提示 -->
+  <view class="member-benefits" wx:if="{{isLoggedIn}}">
+    <view class="benefits-title">会员权益</view>
+    <view class="benefits-list">
+      <view class="benefit-item" wx:for="{{memberBenefits}}" wx:key="index">
+        <view class="benefit-icon">{{item.icon}}</view>
+        <view class="benefit-text">{{item.text}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单区域 -->
+  <view class="menu-section">
+    <view class="menu-item" bindtap="onMyOrders">
+      <view class="menu-icon">
+        <view class="icon-text">📋</view>
+      </view>
+      <view class="menu-text">我的订单</view>
+      <view class="order-status-badges" wx:if="{{isLoggedIn}}">
+        <view class="status-badge pending" wx:if="{{pendingOrderCount > 0}}">
+          <text>{{pendingOrderCount}}</text>
+        </view>
+        <view class="status-badge processing" wx:if="{{processingOrderCount > 0}}">
+          <text>{{processingOrderCount}}</text>
+        </view>
+        <view class="status-badge completed" wx:if="{{completedOrderCount > 0}}">
+          <text>{{completedOrderCount}}</text>
+        </view>
+        <view class="status-badge canceled" wx:if="{{canceledOrderCount > 0}}">
+          <text>{{canceledOrderCount}}</text>
+        </view>
+      </view>
+      <view class="menu-arrow">
+        <view class="arrow-text">></view>
+      </view>
+    </view>
+
+    <view class="menu-item" bindtap="onBrowseHistory">
+      <view class="menu-icon">
+        <view class="icon-text">📖</view>
+      </view>
+      <view class="menu-text">浏览历史</view>
+      <view class="menu-arrow">
+        <view class="arrow-text">></view>
+      </view>
+    </view>
+
+    <view class="menu-item" bindtap="onMyAddress">
+      <view class="menu-icon">
+        <view class="icon-text">📍</view>
+      </view>
+      <view class="menu-text">收货地址</view>
+      <view class="menu-arrow">
+        <view class="arrow-text">></view>
+      </view>
+    </view>
+
+    <view class="menu-item" bindtap="onMyCoupons">
+      <view class="menu-icon">
+        <view class="icon-text">🎫</view>
+      </view>
+      <view class="menu-text">我的优惠券</view>
+      <view class="menu-badge" wx:if="{{couponCount > 0}}">{{couponCount}}</view>
+      <view class="menu-arrow">
+        <view class="arrow-text">></view>
+      </view>
+    </view>
+
+    <view class="menu-item" bindtap="onMyFavorites">
+      <view class="menu-icon">
+        <view class="icon-text">❤️</view>
+      </view>
+      <view class="menu-text">我的收藏</view>
+      <view class="menu-arrow">
+        <view class="arrow-text">></view>
+      </view>
+    </view>
+
+    <view class="menu-item" bindtap="onPointsMall">
+      <view class="menu-icon">
+        <view class="icon-text">🏆</view>
+      </view>
+      <view class="menu-text">积分商城</view>
+      <view class="menu-arrow">
+        <view class="arrow-text">></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 系统设置区域 -->
+  <view class="menu-section">
+    <view class="menu-item" bindtap="onSettings">
+      <view class="menu-icon">
+        <view class="icon-text">⚙️</view>
+      </view>
+      <view class="menu-text">设置</view>
+      <view class="menu-arrow">
+        <view class="arrow-text">></view>
+      </view>
+    </view>
+
+    <view class="menu-item" bindtap="onMessages">
+      <view class="menu-icon">
+        <view class="icon-text">💬</view>
+      </view>
+      <view class="menu-text">消息中心</view>
+      <view class="menu-badge" wx:if="{{messageCount > 0}}">{{messageCount}}</view>
+      <view class="menu-arrow">
+        <view class="arrow-text">></view>
+      </view>
+    </view>
+
+    <view class="menu-item" bindtap="onAbout">
+      <view class="menu-icon">
+        <view class="icon-text">ℹ️</view>
+      </view>
+      <view class="menu-text">关于我们</view>
+      <view class="menu-arrow">
+        <view class="arrow-text">></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 退出登录按钮 -->
+  <view class="logout-section" wx:if="{{isLoggedIn}}">
+    <button class="logout-btn" bindtap="onLogout" type="warn">退出登录</button>
+  </view>
+</view>

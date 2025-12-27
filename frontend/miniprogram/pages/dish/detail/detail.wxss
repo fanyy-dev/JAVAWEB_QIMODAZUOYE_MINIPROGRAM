@@ -1,0 +1,193 @@
+.container {
+  background-color: #f5f5f5;
+  padding-bottom: 100rpx;
+}
+
+/* 菜品图片 */
+.image-container {
+  width: 100%;
+  height: 400rpx;
+  overflow: hidden;
+}
+
+.dish-image {
+  width: 100%;
+  height: 100%;
+}
+
+/* 菜品基本信息 */
+.info-container {
+  background-color: #fff;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.dish-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+  color: #333;
+}
+
+.dish-price {
+  font-size: 40rpx;
+  color: #ff4d4f;
+  font-weight: bold;
+  margin-bottom: 15rpx;
+}
+
+.dish-meta {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 15rpx;
+  border-bottom: 1rpx solid #eee;
+  padding-bottom: 15rpx;
+}
+
+.meta-item {
+  margin-right: 30rpx;
+  font-size: 28rpx;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+.meta-label {
+  margin-right: 5rpx;
+}
+
+.meta-value {
+  color: #333;
+  font-weight: 500;
+}
+
+.dish-tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 24rpx;
+  padding: 4rpx 16rpx;
+  border-radius: 16rpx;
+  margin-right: 16rpx;
+  margin-bottom: 8rpx;
+}
+
+.tag.recommend {
+  background-color: #fff2e8;
+  color: #fa8c16;
+  border: 1rpx solid #ffd591;
+}
+
+.tag.available {
+  background-color: #f6ffed;
+  color: #52c41a;
+  border: 1rpx solid #b7eb8f;
+}
+
+.tag.unavailable {
+  background-color: #f5f5f5;
+  color: #999;
+  border: 1rpx solid #d9d9d9;
+}
+
+/* 菜品描述 */
+.description-container {
+  background-color: #fff;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 15rpx;
+  color: #333;
+  border-left: 8rpx solid #ff6b6b;
+  padding-left: 15rpx;
+}
+
+.description-content {
+  font-size: 28rpx;
+  line-height: 1.6;
+  color: #666;
+  white-space: pre-wrap;
+}
+
+/* 操作栏 */
+.action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100rpx;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20rpx;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.cart-btn {
+  width: 80rpx;
+  height: 80rpx;
+  background-color: #fff;
+  border: 2rpx solid #ff6b6b;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 20rpx;
+  color: #ff6b6b;
+}
+
+.cart-btn .icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-bottom: 4rpx;
+}
+
+.buy-btns {
+  display: flex;
+  flex: 1;
+  margin-left: 20rpx;
+  height: 70rpx;
+}
+
+.add-btn {
+  flex: 1;
+  background-color: #fff;
+  border: 2rpx solid #ff6b6b;
+  color: #ff6b6b;
+  border-radius: 35rpx 0 0 35rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.buy-btn {
+  flex: 1;
+  background-color: #ff6b6b;
+  color: #fff;
+  border-radius: 0 35rpx 35rpx 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+/* 加载状态 */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300rpx;
+  font-size: 28rpx;
+  color: #999;
+}

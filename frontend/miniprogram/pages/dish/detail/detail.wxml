@@ -1,0 +1,53 @@
+<view class="container">
+  <!-- 菜品图片 -->
+  <view class="image-container">
+    <image class="dish-image" src="{{dish.image || '/images/common/icon_search.png'}}" mode="aspectFill"></image>
+  </view>
+
+  <!-- 菜品基本信息 -->
+  <view class="info-container">
+    <view class="dish-name">{{dish.dishName || '加载中...'}}</view>
+    <view class="dish-price">¥{{dish.price || 0}}</view>
+    <view class="dish-meta">
+      <view class="meta-item">
+        <text class="meta-label">评分</text>
+        <text class="meta-value">{{dish.rating || 0.0}} ★</text>
+      </view>
+      <view class="meta-item">
+        <text class="meta-label">月销量</text>
+        <text class="meta-value">{{dish.saleCount || 0}}</text>
+      </view>
+      <view class="meta-item">
+        <text class="meta-label">分类</text>
+        <text class="meta-value">{{dish.categoryName || '未分类'}}</text>
+      </view>
+    </view>
+    <view class="dish-tags">
+      <view wx:if="{{dish.recommend}}" class="tag recommend">推荐</view>
+      <view wx:if="{{dish.status === 1}}" class="tag available">在售</view>
+      <view wx:else class="tag unavailable">已售罄</view>
+    </view>
+  </view>
+
+  <!-- 菜品描述 -->
+  <view class="description-container">
+    <view class="section-title">菜品描述</view>
+    <view class="description-content">{{dish.description || '暂无描述'}}</view>
+  </view>
+
+  <!-- 操作栏 -->
+  <view class="action-bar">
+    <view class="cart-btn" bindtap="goToCart">
+      <image class="icon" src="/images/common/icon_cart.png" mode="aspectFit"></image>
+      <text>购物车</text>
+    </view>
+    <view class="buy-btns">
+      <view class="add-btn" bindtap="addToCart">
+        <text>加入购物车</text>
+      </view>
+      <view class="buy-btn" bindtap="buyNow">
+        <text>立即购买</text>
+      </view>
+    </view>
+  </view>
+</view>

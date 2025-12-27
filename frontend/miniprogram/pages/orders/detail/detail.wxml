@@ -1,0 +1,86 @@
+<view class="container">
+  <!-- 订单头部 -->
+  <view class="order-header">
+    <text class="order-no">订单号：{{order.orderNo}}</text>
+    <text class="order-status" wx:if="{{order.payStatus === 'UNPAID'}}">待付款</text>
+    <text class="order-status" wx:elif="{{order.payStatus === 'PAID' && order.orderStatus === 'PENDING'}}">待接单</text>
+    <text class="order-status" wx:elif="{{order.orderStatus === 'CONFIRMED'}}">已接单</text>
+    <text class="order-status" wx:elif="{{order.orderStatus === 'PREPARING'}}">制作中</text>
+    <text class="order-status" wx:elif="{{order.orderStatus === 'DELIVERING'}}">配送中</text>
+    <text class="order-status" wx:elif="{{order.orderStatus === 'COMPLETED'}}">已完成</text>
+    <text class="order-status" wx:elif="{{order.orderStatus === 'CANCELLED'}}">已取消</text>
+  </view>
+
+  <!-- 收货地址 -->
+  <view class="address-section" wx:if="{{order.orderType === 'TAKEOUT'}}">
+    <view class="section-title">收货地址</view>
+    <view class="address-info" wx:if="{{order.contactName}}">
+      <view class="address-name-phone">
+        <text class="address-name">{{order.contactName}}</text>
+        <text class="address-phone">{{order.contactPhone}}</text>
+      </view>
+      <text class="address-detail">{{order.deliveryAddress}}</text>
+    </view>
+  </view>
+
+  <!-- 订单商品 -->
+  <view class="goods-section">
+    <view class="section-title">商品信息</view>
+    <view class="goods-list">
+      <view class="goods-item" wx:for="{{order.orderItems}}" wx:key="index">
+        <image src="{{item.itemImage}}" class="goods-image" mode="aspectFill"></image>
+        <view class="goods-info">
+          <text class="goods-name">{{item.itemName}}</text>
+          <view class="goods-price-quantity">
+            <text class="goods-price">¥{{item.price}}</text>
+            <text class="goods-quantity">x{{item.quantity}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 订单信息 -->
+  <view class="order-info-section">
+    <view class="section-title">订单信息</view>
+    <view class="info-item">
+      <text class="info-label">创建时间</text>
+      <text class="info-value">{{order.createTime}}</text>
+    </view>
+    <view class="info-item" wx:if="{{order.payTime}}">
+      <text class="info-label">支付时间</text>
+      <text class="info-value">{{order.payTime}}</text>
+    </view>
+    <view class="info-item" wx:if="{{order.deliveryTime}}">
+      <text class="info-label">发货时间</text>
+      <text class="info-value">{{order.deliveryTime}}</text>
+    </view>
+    <view class="info-item" wx:if="{{order.completeTime}}">
+      <text class="info-label">完成时间</text>
+      <text class="info-value">{{order.completeTime}}</text>
+    </view>
+  </view>
+
+  <!-- 订单金额 -->
+  <view class="amount-section">
+    <view class="amount-item">
+      <text class="amount-label">商品总价</text>
+      <text class="amount-value">¥{{order.totalAmount}}</text>
+    </view>
+    <view class="amount-item">
+      <text class="amount-label">运费</text>
+      <text class="amount-value">¥{{order.deliveryFee || 0}}</text>
+    </view>
+    <view class="amount-item total">
+      <text class="amount-label">实付金额</text>
+      <text class="amount-value total-price">¥{{order.actualAmount}}</text>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons" wx:if="{{order}}">
+    <button class="action-btn cancel" wx:if="{{order.payStatus === 'UNPAID'}}" bindtap="onCancelOrder">取消订单</button>
+    <button class="action-btn pay" wx:if="{{order.payStatus === 'UNPAID'}}" bindtap="onPayOrder">立即支付</button>
+    <button class="action-btn confirm" wx:if="{{order.orderStatus === 'DELIVERING'}}" bindtap="onConfirmReceipt">确认收货</button>
+  </view>
+</view>

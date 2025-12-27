@@ -1,0 +1,144 @@
+.container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding-bottom: 100rpx;
+}
+
+/* 地址列表 */
+.address-list {
+  padding: 20rpx;
+}
+
+.address-item {
+  background-color: #fff;
+  border-radius: 10rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 地址内容 */
+.address-content {
+  flex: 1;
+}
+
+/* 地址头部 */
+.address-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.address-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-right: 20rpx;
+}
+
+.address-phone {
+  font-size: 28rpx;
+  color: #666;
+  margin-right: 20rpx;
+}
+
+.address-default {
+  font-size: 24rpx;
+  color: #ff6b6b;
+  background-color: rgba(255, 107, 107, 0.1);
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+}
+
+/* 地址详情 */
+.address-detail {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.5;
+  word-break: break-all;
+}
+
+/* 操作按钮 */
+.address-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.action-btn {
+  padding: 10rpx 20rpx;
+  border-radius: 8rpx;
+  text-align: center;
+  font-size: 24rpx;
+}
+
+.action-btn.edit {
+  background-color: #e8f5e9;
+  color: #4caf50;
+}
+
+.action-btn.delete {
+  background-color: #ffebee;
+  color: #f44336;
+}
+
+.action-text {
+  font-size: 24rpx;
+}
+
+/* 选择箭头 */
+.select-arrow {
+  font-size: 40rpx;
+  color: #ccc;
+  margin-left: 20rpx;
+}
+
+/* 空地址提示 */
+.empty-addresses {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 200rpx 0;
+}
+
+.empty-icon {
+  font-size: 100rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 添加地址按钮 */
+.add-address-btn {
+  position: fixed;
+  bottom: 30rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+  background-color: #ff6b6b;
+  color: #fff;
+  padding: 20rpx 40rpx;
+  border-radius: 50rpx;
+  box-shadow: 0 4rpx 20rpx rgba(255, 107, 107, 0.3);
+}
+
+.add-icon {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.add-text {
+  font-size: 28rpx;
+  font-weight: bold;
+}

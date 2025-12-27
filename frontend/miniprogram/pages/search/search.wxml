@@ -1,0 +1,93 @@
+<!-- pages/search/search.wxml -->
+<view class="container">
+  <!-- 搜索框 -->
+  <view class="search-header">
+    <view class="search-box">
+      <icon type="search" size="14" color="#999"></icon>
+      <input 
+        class="search-input" 
+        placeholder="搜索菜品或门店" 
+        value="{{keyword}}"
+        bindinput="onInput"
+        bindconfirm="onSearch"
+        focus="{{focus}}"
+      />
+      <icon wx:if="{{keyword}}" type="clear" size="14" color="#999" bindtap="onClear"></icon>
+    </view>
+    <text class="search-cancel" bindtap="onCancel">取消</text>
+  </view>
+
+  <!-- 搜索历史 -->
+  <view class="history-section" wx:if="{{!keyword && historyList.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">搜索历史</text>
+      <text class="section-clear" bindtap="clearHistory">清空</text>
+    </view>
+    <view class="history-tags">
+      <view class="history-tag" wx:for="{{historyList}}" wx:key="index" bindtap="onHistoryTap" data-keyword="{{item}}">
+        {{item}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 热门搜索 -->
+  <view class="hot-section" wx:if="{{!keyword}}">
+    <view class="section-header">
+      <text class="section-title">热门搜索</text>
+    </view>
+    <view class="hot-tags">
+      <view class="hot-tag" wx:for="{{hotList}}" wx:key="index" bindtap="onHotTap" data-keyword="{{item}}">
+        {{item}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 搜索结果 -->
+  <view class="result-section" wx:if="{{keyword && hasSearched}}">
+    <!-- Tab切换 -->
+    <view class="result-tabs">
+      <view class="tab {{activeTab === 'dish' ? 'active' : ''}}" bindtap="onTabChange" data-tab="dish">
+        菜品({{dishList.length}})
+      </view>
+      <view class="tab {{activeTab === 'store' ? 'active' : ''}}" bindtap="onTabChange" data-tab="store">
+        门店({{storeList.length}})
+      </view>
+    </view>
+
+    <!-- 菜品列表 -->
+    <view class="dish-list" wx:if="{{activeTab === 'dish'}}">
+      <view class="dish-item" wx:for="{{dishList}}" wx:key="id" bindtap="onDishTap" data-id="{{item.id}}">
+        <image src="{{item.image}}" class="dish-image"></image>
+        <view class="dish-info">
+          <text class="dish-name">{{item.dishName}}</text>
+          <text class="dish-desc">{{item.description}}</text>
+          <view class="dish-bottom">
+            <text class="dish-price">¥{{item.price}}</text>
+            <text class="dish-sales">已售{{item.saleCount || 0}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="empty" wx:if="{{dishList.length === 0}}">
+        <text>未找到相关菜品</text>
+      </view>
+    </view>
+
+    <!-- 门店列表 -->
+    <view class="store-list" wx:if="{{activeTab === 'store'}}">
+      <view class="store-item" wx:for="{{storeList}}" wx:key="id" bindtap="onStoreTap" data-id="{{item.id}}">
+        <image src="{{item.images[0] || '/images/default-store.png'}}" class="store-image"></image>
+        <view class="store-info">
+          <text class="store-name">{{item.storeName}}</text>
+          <view class="store-meta">
+            <text class="store-rating">⭐ {{item.rating}}</text>
+            <text class="store-price">人均¥{{item.avgPrice}}</text>
+          </view>
+          <text class="store-address">{{item.address}}</text>
+        </view>
+      </view>
+      <view class="empty" wx:if="{{storeList.length === 0}}">
+        <text>未找到相关门店</text>
+      </view>
+    </view>
+  </view>
+</view>

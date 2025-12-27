@@ -1,0 +1,48 @@
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-container">
+    <view class="search-box">
+      <image class="search-icon" src="/images/common/icon_search.png" mode="aspectFit"></image>
+      <input class="search-input" placeholder="搜索门店名称" bindinput="onInput" bindconfirm="onSearch" value="{{keyword}}"></input>
+      <view wx:if="{{keyword}}" class="clear-icon" bindtap="clearSearch">×</view>
+    </view>
+    <button class="search-btn" bindtap="onSearch">搜索</button>
+  </view>
+
+  <!-- 门店列表 -->
+  <view class="store-list">
+    <view wx:if="{{loading && pageNum === 1}}" class="loading-container">
+      <text>加载中...</text>
+    </view>
+    <view wx:elif="{{storeList.length === 0}}" class="empty-container">
+      <image class="empty-image" src="/images/common/icon_search.png" mode="aspectFit"></image>
+      <text class="empty-text">暂无门店数据</text>
+    </view>
+    <view wx:else>
+      <view class="store-item" wx:for="{{storeList}}" wx:key="id" bindtap="goToStoreDetail" data-id="{{item.id}}">
+        <view class="store-image-container">
+          <image class="store-image" src="{{item.imageUrl || '/images/common/icon_search.png'}}" mode="aspectFill"></image>
+          <view class="store-status" wx:if="{{item.status === 1}}">营业中</view>
+          <view class="store-status closed" wx:else>已停业</view>
+        </view>
+        <view class="store-info">
+          <view class="store-name-container">
+            <text class="store-name">{{item.storeName}}</text>
+            <text class="store-rating">{{item.rating || 0.0}} ★</text>
+          </view>
+          <view class="store-type">{{item.storeType || '其他'}}</view>
+          <view class="store-address">{{item.address || '暂无地址'}}</view>
+          <view class="store-meta">
+            <text class="meta-item">人均 ¥{{item.avgPrice || 0}}</text>
+            <text class="meta-item">电话: {{item.phone || '暂无'}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 加载更多 -->
+      <view class="load-more" wx:if="{{hasMore}}" bindtap="loadMore">
+        <text>{{loading ? '加载中...' : '点击加载更多'}}</text>
+      </view>
+    </view>
+  </view>
+</view>

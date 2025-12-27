@@ -1,0 +1,57 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/search/search",
+    "pages/dish/list/list",
+    "pages/dish/detail/detail",
+    "pages/store/list/list",
+    "pages/store/detail/detail",
+    "pages/auth/login/login",
+    "pages/auth/register/register",
+    "pages/me/me",
+    "pages/orders/list/list",
+    "pages/orders/detail/detail",
+    "pages/orders/confirm/confirm",
+    "pages/orders/review/review",
+    "pages/address/list/list",
+    "pages/address/edit/edit",
+    "pages/coupons/list/list",
+    "pages/favorites/list/list",
+    "pages/settings/index/index",
+    "pages/about/index/index",
+    "pages/cart/list/list",
+    "pages/messages/list/list",
+    "pages/points/mall/mall"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ff6b6b",
+    "navigationBarTitleText": "饭店小程序",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#666666",
+    "selectedColor": "#ff6b35",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/cart/list/list",
+        "text": "购物车"
+      },
+      {
+        "pagePath": "pages/orders/list/list",
+        "text": "订单"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "我的"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

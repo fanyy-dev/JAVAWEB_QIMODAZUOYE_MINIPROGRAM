@@ -115,7 +115,7 @@ Page({
         if (res.confirm) {
           // 模拟确认收货
           this.setData({
-            'order.status': 3
+            'order.orderStatus': 'COMPLETED'
           });
           wx.showToast({
             title: '收货成功',
@@ -123,6 +123,13 @@ Page({
           });
         }
       }
+    });
+  },
+
+  // 评价订单
+  onReviewOrder() {
+    wx.navigateTo({
+      url: `/pages/orders/review/review?orderId=${this.data.orderId}&storeId=${this.data.order.storeId || 1}`
     });
   }
 });

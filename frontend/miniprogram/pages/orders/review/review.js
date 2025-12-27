@@ -28,18 +28,18 @@ Page({
   },
 
   loadOrderInfo(orderId) {
-    wx.request({
-      url: `${app.globalData.baseUrl}/order/${orderId}`,
-      header: { 'Authorization': wx.getStorageSync('token') },
-      success: (res) => {
-        if (res.data.code === 200) {
-          this.setData({
-            orderNo: res.data.data.orderNo,
-            storeId: res.data.data.storeId
-          })
-        }
-      }
-    })
+    app.request({
+      url: `/order/${orderId}`,
+      method: 'GET',
+      requireAuth: true
+    }).then(data => {
+      this.setData({
+        orderNo: data.orderNo,
+        storeId: data.storeId
+      });
+    }).catch(err => {
+      console.error('加载订单信息失败:', err);
+    });
   },
 
   onTasteRate(e) {
@@ -85,23 +85,29 @@ Page({
   },
 
   onSubmit() {
-    const { orderId, storeId, tasteRating, serviceRating, environmentRating, content, images, anonymous } = this.data
-    const userInfo = wx.getStorageSync('userInfo')
+    const { orderId, storeId, tasteRating, serviceRating, environmentRating, content, images, anonymous } = this.data;
+    const userInfo = wx.getStorageSync('userInfo') || app.globalData.userInfo;
 
     if (!orderId) {
-      wx.showToast({ title: '订单信息错误', icon: 'none' })
-      return
+      wx.showToast({ title: '订单信息错误', icon: 'none' });
+      return;
     }
 
-    wx.showLoading({ title: '提交中...' })
+    if (!userInfo || !userInfo.id) {
+      wx.showToast({ title: '请先登录', icon: 'none' });
+      return;
+    }
 
-    wx.request({
-      url: `${app.globalData.baseUrl}/review`,
+    if (!content || content.trim().length === 0) {
+      wx.showToast({ title: '请输入评价内容', icon: 'none' });
+      return;
+    }
+
+    wx.showLoading({ title: '提交中...' });
+
+    app.request({
+      url: '/review',
       method: 'POST',
-      header: { 
-        'Authorization': wx.getStorageSync('token'),
-        'Content-Type': 'application/json'
-      },
       data: {
         orderId: parseInt(orderId),
         userId: userInfo.id,
@@ -113,21 +119,17 @@ Page({
         images: JSON.stringify(images),
         anonymous: anonymous ? 1 : 0
       },
-      success: (res) => {
-        wx.hideLoading()
-        if (res.data.code === 200) {
-          wx.showToast({ title: '评价成功', icon: 'success' })
-          setTimeout(() => {
-            wx.navigateBack()
-          }, 1500)
-        } else {
-          wx.showToast({ title: res.data.message || '评价失败', icon: 'none' })
-        }
-      },
-      fail: () => {
-        wx.hideLoading()
-        wx.showToast({ title: '网络错误', icon: 'none' })
-      }
-    })
+      requireAuth: true
+    }).then(() => {
+      wx.hideLoading();
+      wx.showToast({ title: '评价成功', icon: 'success' });
+      setTimeout(() => {
+        wx.navigateBack();
+      }, 1500);
+    }).catch(err => {
+      wx.hideLoading();
+      console.error('评价失败:', err);
+      wx.showToast({ title: '评价失败', icon: 'error' });
+    });
   }
 })

@@ -82,5 +82,6 @@
     <button class="action-btn cancel" wx:if="{{order.payStatus === 'UNPAID'}}" bindtap="onCancelOrder">取消订单</button>
     <button class="action-btn pay" wx:if="{{order.payStatus === 'UNPAID'}}" bindtap="onPayOrder">立即支付</button>
     <button class="action-btn confirm" wx:if="{{order.orderStatus === 'DELIVERING'}}" bindtap="onConfirmReceipt">确认收货</button>
+    <button class="action-btn review" wx:if="{{order.payStatus === 'PAID' && order.orderStatus === 'COMPLETED'}}" bindtap="onReviewOrder">评价订单</button>
   </view>
 </view>

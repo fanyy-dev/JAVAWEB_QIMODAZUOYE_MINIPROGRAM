@@ -27,7 +27,32 @@ Page({
   data: {
     dish: {},
     loading: true,
-    error: false
+    error: false,
+    
+    // 菜品定制选项
+    quantity: 1,
+    selectedTaste: '不辣', // 默认口味
+    selectedSize: '中份', // 默认份量
+    selectedExtras: [], // 选中的加料
+    
+    // 可选项列表
+    tasteOptions: [
+      { value: '不辣', label: '不辣' },
+      { value: '微辣', label: '微辣' },
+      { value: '中辣', label: '中辣' },
+      { value: '特辣', label: '特辣' }
+    ],
+    sizeOptions: [
+      { value: '小份', label: '小份', price: -5 },
+      { value: '中份', label: '中份', price: 0 },
+      { value: '大份', label: '大份', price: 5 }
+    ],
+    extraOptions: [
+      { id: 'extra1', name: '加辣椒', price: 2 },
+      { id: 'extra2', name: '加葱花', price: 1 },
+      { id: 'extra3', name: '加香菜', price: 1 },
+      { id: 'extra4', name: '加蒜', price: 1 }
+    ]
   },
 
   onLoad(options) {
@@ -76,9 +101,65 @@ Page({
     });
   },
 
-  // 重新加载
-  onRetry() {
-    this.loadDishDetail();
+  // 数量减少
+  decreaseQuantity() {
+    if (this.data.quantity > 1) {
+      this.setData({ quantity: this.data.quantity - 1 });
+    }
+  },
+
+  // 数量增加
+  increaseQuantity() {
+    this.setData({ quantity: this.data.quantity + 1 });
+  },
+
+  // 选择口味
+  selectTaste(e) {
+    const taste = e.currentTarget.dataset.value;
+    this.setData({ selectedTaste: taste });
+  },
+
+  // 选择份量
+  selectSize(e) {
+    const size = e.currentTarget.dataset.value;
+    this.setData({ selectedSize: size });
+  },
+
+  // 切换加料
+  toggleExtra(e) {
+    const extraId = e.currentTarget.dataset.id;
+    const extras = this.data.selectedExtras.slice();
+    const index = extras.indexOf(extraId);
+    
+    if (index > -1) {
+      extras.splice(index, 1);
+    } else {
+      extras.push(extraId);
+    }
+    
+    this.setData({ selectedExtras: extras });
+  },
+
+  // 计算总价
+  calculateTotalPrice() {
+    let total = this.data.dish.price || 0;
+    
+    // 加上份量价格
+    const sizeOption = this.data.sizeOptions.find(s => s.value === this.data.selectedSize);
+    if (sizeOption) {
+      total += sizeOption.price;
+    }
+    
+    // 加上加料价格
+    this.data.selectedExtras.forEach(extraId => {
+      const extra = this.data.extraOptions.find(e => e.id === extraId);
+      if (extra) {
+        total += extra.price;
+      }
+    });
+    
+    // 乘以数量
+    return (total * this.data.quantity).toFixed(2);
   },
 
   // 检查登录状态
@@ -111,19 +192,23 @@ Page({
     // 获取本地购物车数据
     let cart = wx.getStorageSync('cart') || [];
     
-    // 检查是否已存在该菜品
-    const existingIndex = cart.findIndex(item => item.id === this.dishId);
+    // 构建菜品信息（包含定制选项）
+    const cartItem = {
+      ...this.data.dish,
+      quantity: this.data.quantity,
+      customize: {
+        taste: this.data.selectedTaste,
+        size: this.data.selectedSize,
+        extras: this.data.selectedExtras.map(id => {
+          const extra = this.data.extraOptions.find(e => e.id === id);
+          return extra ? extra.name : '';
+        }).filter(Boolean)
+      },
+      customPrice: parseFloat(this.calculateTotalPrice()) / this.data.quantity
+    };
     
-    if (existingIndex >= 0) {
-      // 已存在，数量+1
-      cart[existingIndex].quantity += 1;
-    } else {
-      // 不存在，添加新条目
-      cart.push({
-        ...this.data.dish,
-        quantity: 1
-      });
-    }
+    // 直接添加（包含定制选项的菜品视为不同的商品）
+    cart.push(cartItem);
     
     // 保存到本地存储
     wx.setStorageSync('cart', cart);
@@ -132,6 +217,14 @@ Page({
       title: '已加入购物车', 
       icon: 'success',
       duration: 1500
+    });
+    
+    // 重置选项
+    this.setData({
+      quantity: 1,
+      selectedTaste: '不辣',
+      selectedSize: '中份',
+      selectedExtras: []
     });
   },
 
@@ -144,13 +237,22 @@ Page({
       return;
     }
 
-    // 创建订单数据
+    // 创建订单数据（包含定制选项）
     const orderData = {
       items: [{
         ...this.data.dish,
-        quantity: 1
+        quantity: this.data.quantity,
+        customize: {
+          taste: this.data.selectedTaste,
+          size: this.data.selectedSize,
+          extras: this.data.selectedExtras.map(id => {
+            const extra = this.data.extraOptions.find(e => e.id === id);
+            return extra ? extra.name : '';
+          }).filter(Boolean)
+        },
+        customPrice: parseFloat(this.calculateTotalPrice()) / this.data.quantity
       }],
-      totalPrice: this.data.dish.price
+      totalPrice: this.calculateTotalPrice()
     };
     
     // 保存订单数据到本地，用于跳转到订单确认页

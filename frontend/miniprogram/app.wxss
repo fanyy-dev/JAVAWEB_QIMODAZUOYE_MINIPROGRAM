@@ -110,8 +110,8 @@ page {
 /* 团购价格区 */
 .group-buy-price {
   display: flex;
-  align-items: baseline;
-  gap: 12rpx;
+  flex-direction: column;
+  gap: 6rpx;
   margin-top: 8rpx;
 }
 
@@ -120,6 +120,23 @@ page {
   font-weight: bold;
   display: flex;
   align-items: baseline;
+}
+
+.original-price-wrapper {
+  display: flex;
+  align-items: baseline;
+}
+
+.price-label {
+  font-size: 24rpx;
+  color: #ff6b6b;
+  margin-right: 4rpx;
+}
+
+.price-label-gray {
+  font-size: 22rpx;
+  color: #999;
+  margin-right: 4rpx;
 }
 
 /* 团购滚动区 */

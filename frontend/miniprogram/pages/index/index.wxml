@@ -25,10 +25,14 @@
           <text class="group-buy-name text-ellipsis">{{item.dishName}}</text>
           <view class="group-buy-price">
             <view class="current-price">
+              <text class="price-label">特价：</text>
               <text class="price-symbol">¥</text>
               <text class="price-integer">{{item.price}}</text>
             </view>
-            <text class="price-original">¥{{item.originalPrice || item.price}}</text>
+            <view class="original-price-wrapper">
+              <text class="price-label-gray">原价：</text>
+              <text class="price-original">¥{{item.originalPrice || item.price}}</text>
+            </view>
           </view>
           <view class="group-buy-sales">{{item.saleCount || 0}}人已团</view>
         </view>

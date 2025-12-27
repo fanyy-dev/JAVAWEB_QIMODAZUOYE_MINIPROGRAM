@@ -30,6 +30,7 @@
     "navigationBarTextStyle": "white"
   },
   "tabBar": {
+    "custom": true,
     "color": "#666666",
     "selectedColor": "#ff6b35",
     "backgroundColor": "#ffffff",
@@ -37,19 +38,19 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页"
+        "text": "🏠"
       },
       {
         "pagePath": "pages/cart/list/list",
-        "text": "购物车"
+        "text": "🛒"
       },
       {
         "pagePath": "pages/orders/list/list",
-        "text": "订单"
+        "text": "📝"
       },
       {
         "pagePath": "pages/me/me",
-        "text": "我的"
+        "text": "👤"
       }
     ]
   },

@@ -10,6 +10,13 @@ Page({
   },
 
   onShow(options) {
+    // 设置 tabBar 选中状态
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({
+        selected: 2
+      });
+    }
+    
     // 页面显示时检查登录状态
     if (!app.globalData.token) {
       this.goToLogin();

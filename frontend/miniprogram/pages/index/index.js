@@ -224,5 +224,14 @@ Page({
     wx.navigateTo({
       url: '/pages/store/list/list'
     });
+  },
+
+  // 设置 tabBar 选中状态
+  onShow() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({
+        selected: 0
+      });
+    }
   }
 });

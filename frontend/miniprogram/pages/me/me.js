@@ -24,6 +24,13 @@ Page({
   },
 
   onShow() {
+    // 设置 tabBar 选中状态
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({
+        selected: 3
+      });
+    }
+    
     // 页面显示时获取最新的用户信息
     this.checkLoginStatus();
     this.loadUserData();

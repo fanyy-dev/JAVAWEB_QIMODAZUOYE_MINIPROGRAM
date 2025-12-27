@@ -24,8 +24,10 @@
         <view class="group-buy-info">
           <text class="group-buy-name text-ellipsis">{{item.dishName}}</text>
           <view class="group-buy-price">
-            <text class="price-symbol">¥</text>
-            <text class="price-integer">{{item.price}}</text>
+            <view class="current-price">
+              <text class="price-symbol">¥</text>
+              <text class="price-integer">{{item.price}}</text>
+            </view>
             <text class="price-original">¥{{item.originalPrice || item.price}}</text>
           </view>
           <view class="group-buy-sales">{{item.saleCount || 0}}人已团</view>

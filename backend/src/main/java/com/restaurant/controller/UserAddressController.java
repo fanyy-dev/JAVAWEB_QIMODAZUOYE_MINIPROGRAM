@@ -24,9 +24,22 @@ public class UserAddressController {
      */
     @GetMapping("/list")
     public Result<List<UserAddress>> getAddressList(HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute("userId");
-        List<UserAddress> addresses = addressService.getUserAddresses(userId);
-        return Result.success(addresses);
+        try {
+            Long userId = (Long) request.getAttribute("userId");
+            System.out.println("[UserAddressController] 获取地址列表 - userId: " + userId);
+            
+            if (userId == null) {
+                return Result.error("用户未登录");
+            }
+            
+            List<UserAddress> addresses = addressService.getUserAddresses(userId);
+            System.out.println("[UserAddressController] 查询到 " + addresses.size() + " 条地址");
+            return Result.success(addresses);
+        } catch (Exception e) {
+            System.err.println("[UserAddressController] 获取地址列表失败: " + e.getMessage());
+            e.printStackTrace();
+            return Result.error("获取地址列表失败: " + e.getMessage());
+        }
     }
 
     /**

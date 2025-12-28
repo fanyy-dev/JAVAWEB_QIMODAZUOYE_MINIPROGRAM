@@ -1,7 +1,7 @@
 // app.js
 App({
   globalData: {
-    baseUrl: 'http://192.168.67.1:8080/api',
+    baseUrl: 'http://localhost:8080/api',  // 改为 localhost
     token: null,
     userInfo: null
   },

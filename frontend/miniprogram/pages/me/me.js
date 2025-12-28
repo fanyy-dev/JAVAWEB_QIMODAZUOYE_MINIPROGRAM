@@ -256,7 +256,14 @@ Page({
 
   // 我的订单
   onMyOrders() {
-    this.checkLoginAndNavigate('/pages/orders/list/list');
+    // 订单页在 tabBar 中，使用 switchTab
+    if (!this.data.isLoggedIn) {
+      this.goToLogin();
+      return;
+    }
+    wx.switchTab({
+      url: '/pages/orders/list/list'
+    });
   },
 
   // 浏览历史

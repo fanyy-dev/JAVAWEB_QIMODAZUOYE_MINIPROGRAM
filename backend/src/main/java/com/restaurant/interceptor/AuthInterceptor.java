@@ -69,6 +69,6 @@ public class AuthInterceptor implements HandlerInterceptor {
         request.setAttribute("userId", userId);
         request.setAttribute("userType", userType);
 
-        return true;
+        return true;    
     }
 }

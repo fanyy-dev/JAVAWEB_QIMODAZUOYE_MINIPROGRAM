@@ -227,7 +227,10 @@ Page({
 
   // 点击标为已读按钮
   onMarkRead(e) {
-    e.stopPropagation(); // 阻止事件冒泡
+    // 校验事件对象，避免类型错误
+    if (e && typeof e.stopPropagation === 'function') {
+      e.stopPropagation(); // 阻止事件冒泡
+    }
     
     const id = e.currentTarget.dataset.id;
     this.markRead(id);
@@ -260,7 +263,10 @@ Page({
 
   // 点击删除按钮
   onDelete(e) {
-    e.stopPropagation(); // 阻止事件冒泡
+    // 校验事件对象，避免类型错误
+    if (e && typeof e.stopPropagation === 'function') {
+      e.stopPropagation(); // 阻止事件冒泡
+    }
     
     const id = e.currentTarget.dataset.id;
     

@@ -15,10 +15,13 @@ public class UserAddress implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;
 
+    @TableField("user_id")
     private Long userId;
 
+    @TableField("contact_name")
     private String contactName;
 
+    @TableField("contact_phone")
     private String contactPhone;
 
     private String province;
@@ -27,10 +30,13 @@ public class UserAddress implements Serializable {
 
     private String district;
 
+    @TableField("detail_address")
     private String detailAddress;
 
+    @TableField("address_type")
     private String addressType;
 
+    @TableField("is_default")
     private Integer isDefault;
 
     private BigDecimal latitude;

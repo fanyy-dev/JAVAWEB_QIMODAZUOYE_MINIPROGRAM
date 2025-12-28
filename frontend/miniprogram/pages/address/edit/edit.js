@@ -37,50 +37,32 @@ Page({
       title: '加载中...'
     });
     
-    wx.request({
-      url: app.globalData.baseUrl + `/address/${addressId}`,
-      method: 'GET',
-      header: {
-        'token': app.globalData.token
-      },
-      success: (res) => {
-        wx.hideLoading();
-        
-        if (res.data.code === 200) {
-          const address = res.data.data;
-          // 字段名映射
-          const formData = {
-            id: address.id,
-            name: address.contactName,
-            phone: address.contactPhone,
-            province: address.province,
-            city: address.city,
-            district: address.district,
-            detail: address.detailAddress,
-            isDefault: address.isDefault === 1
-          };
-          
-          this.setData({ 
-            formData: formData,
-            region: [address.province, address.city, address.district]
-          });
-        } else {
-          wx.showToast({
-            title: res.data.message || '加载失败',
-            icon: 'none'
-          });
-          setTimeout(() => wx.navigateBack(), 1500);
-        }
-      },
-      fail: (err) => {
-        wx.hideLoading();
-        wx.showToast({
-          title: '网络请求失败',
-          icon: 'none'
-        });
-        console.error('加载地址失败:', err);
-        setTimeout(() => wx.navigateBack(), 1500);
-      }
+    app.request({
+      url: `/address/${addressId}`,
+      method: 'GET'
+    }).then(address => {
+      wx.hideLoading();
+      
+      // 字段名映射
+      const formData = {
+        id: address.id,
+        name: address.contactName,
+        phone: address.contactPhone,
+        province: address.province,
+        city: address.city,
+        district: address.district,
+        detail: address.detailAddress,
+        isDefault: address.isDefault === 1
+      };
+      
+      this.setData({ 
+        formData: formData,
+        region: [address.province, address.city, address.district]
+      });
+    }).catch(err => {
+      wx.hideLoading();
+      console.error('加载地址失败:', err);
+      setTimeout(() => wx.navigateBack(), 1500);
     });
   },
 
@@ -150,42 +132,24 @@ Page({
     const url = this.data.isEditing ? '/address/update' : '/address/add';
     const method = this.data.isEditing ? 'PUT' : 'POST';
     
-    wx.request({
-      url: app.globalData.baseUrl + url,
+    app.request({
+      url: url,
       method: method,
-      data: requestData,
-      header: {
-        'Content-Type': 'application/json',
-        'token': app.globalData.token
-      },
-      success: (res) => {
-        wx.hideLoading();
-        
-        if (res.data.code === 200) {
-          wx.showToast({
-            title: this.data.isEditing ? '地址已更新' : '地址已添加',
-            icon: 'success'
-          });
-          
-          // 返回上一页
-          setTimeout(() => {
-            wx.navigateBack();
-          }, 1500);
-        } else {
-          wx.showToast({
-            title: res.data.message || '保存失败',
-            icon: 'none'
-          });
-        }
-      },
-      fail: (err) => {
-        wx.hideLoading();
-        wx.showToast({
-          title: '网络请求失败',
-          icon: 'none'
-        });
-        console.error('保存地址失败:', err);
-      }
+      data: requestData
+    }).then(() => {
+      wx.hideLoading();
+      wx.showToast({
+        title: this.data.isEditing ? '地址已更新' : '地址已添加',
+        icon: 'success'
+      });
+      
+      // 返回上一页
+      setTimeout(() => {
+        wx.navigateBack();
+      }, 1500);
+    }).catch(err => {
+      wx.hideLoading();
+      console.error('保存地址失败:', err);
     });
   },
 

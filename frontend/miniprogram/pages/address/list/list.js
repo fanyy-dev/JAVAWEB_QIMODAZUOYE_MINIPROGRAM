@@ -29,37 +29,47 @@ Page({
   loadAddresses() {
     this.setData({ loading: true });
     
-    // 模拟地址数据
-    const mockAddresses = [
-      {
-        id: 1,
-        name: '张三',
-        phone: '13800138000',
-        province: '北京市',
-        city: '北京市',
-        district: '朝阳区',
-        detail: '建国路88号现代城A座1001室',
-        isDefault: true
+    wx.request({
+      url: app.globalData.baseUrl + '/address/list',
+      method: 'GET',
+      header: {
+        'token': app.globalData.token
       },
-      {
-        id: 2,
-        name: '李四',
-        phone: '13900139000',
-        province: '上海市',
-        city: '上海市',
-        district: '浦东新区',
-        detail: '陆家嘴金融中心25楼',
-        isDefault: false
+      success: (res) => {
+        if (res.data.code === 200) {
+          // 字段名映射：后端返回 contactName/contactPhone/detailAddress
+          const addresses = (res.data.data || []).map(addr => ({
+            id: addr.id,
+            name: addr.contactName,
+            phone: addr.contactPhone,
+            province: addr.province,
+            city: addr.city,
+            district: addr.district,
+            detail: addr.detailAddress,
+            isDefault: addr.isDefault === 1
+          }));
+          
+          this.setData({
+            addresses: addresses,
+            loading: false
+          });
+        } else {
+          this.setData({ loading: false });
+          wx.showToast({
+            title: res.data.message || '加载失败',
+            icon: 'none'
+          });
+        }
+      },
+      fail: (err) => {
+        this.setData({ loading: false });
+        wx.showToast({
+          title: '网络请求失败',
+          icon: 'none'
+        });
+        console.error('加载地址列表失败:', err);
       }
-    ];
-    
-    // 模拟网络请求延迟
-    setTimeout(() => {
-      this.setData({
-        addresses: mockAddresses,
-        loading: false
-      });
-    }, 500);
+    });
   },
 
   // 选择地址
@@ -116,12 +126,35 @@ Page({
       content: '确定要删除这个地址吗？',
       success: (res) => {
         if (res.confirm) {
-          // 模拟删除地址
-          const newAddresses = this.data.addresses.filter(addr => addr.id !== addressId);
-          this.setData({ addresses: newAddresses });
-          wx.showToast({
-            title: '地址已删除',
-            icon: 'success'
+          // 调用后端API删除地址
+          wx.request({
+            url: app.globalData.baseUrl + `/address/${addressId}`,
+            method: 'DELETE',
+            header: {
+              'token': app.globalData.token
+            },
+            success: (res) => {
+              if (res.data.code === 200) {
+                wx.showToast({
+                  title: '地址已删除',
+                  icon: 'success'
+                });
+                // 重新加载列表
+                this.loadAddresses();
+              } else {
+                wx.showToast({
+                  title: res.data.message || '删除失败',
+                  icon: 'none'
+                });
+              }
+            },
+            fail: (err) => {
+              wx.showToast({
+                title: '网络请求失败',
+                icon: 'none'
+              });
+              console.error('删除地址失败:', err);
+            }
           });
         }
       }

@@ -33,25 +33,55 @@ Page({
 
   // 加载地址数据（编辑模式）
   loadAddressData(addressId) {
-    // 模拟地址数据
-    const mockAddress = {
-      id: addressId,
-      name: '张三',
-      phone: '13800138000',
-      province: '北京市',
-      city: '北京市',
-      district: '朝阳区',
-      detail: '建国路88号现代城A座1001室',
-      isDefault: true
-    };
+    wx.showLoading({
+      title: '加载中...'
+    });
     
-    // 模拟网络请求延迟
-    setTimeout(() => {
-      this.setData({ 
-        formData: mockAddress,
-        region: [mockAddress.province, mockAddress.city, mockAddress.district]  // 初始化地区选择器
-      });
-    }, 500);
+    wx.request({
+      url: app.globalData.baseUrl + `/address/${addressId}`,
+      method: 'GET',
+      header: {
+        'token': app.globalData.token
+      },
+      success: (res) => {
+        wx.hideLoading();
+        
+        if (res.data.code === 200) {
+          const address = res.data.data;
+          // 字段名映射
+          const formData = {
+            id: address.id,
+            name: address.contactName,
+            phone: address.contactPhone,
+            province: address.province,
+            city: address.city,
+            district: address.district,
+            detail: address.detailAddress,
+            isDefault: address.isDefault === 1
+          };
+          
+          this.setData({ 
+            formData: formData,
+            region: [address.province, address.city, address.district]
+          });
+        } else {
+          wx.showToast({
+            title: res.data.message || '加载失败',
+            icon: 'none'
+          });
+          setTimeout(() => wx.navigateBack(), 1500);
+        }
+      },
+      fail: (err) => {
+        wx.hideLoading();
+        wx.showToast({
+          title: '网络请求失败',
+          icon: 'none'
+        });
+        console.error('加载地址失败:', err);
+        setTimeout(() => wx.navigateBack(), 1500);
+      }
+    });
   },
 
   // 表单输入处理
@@ -100,23 +130,63 @@ Page({
       return;
     }
     
-    // 模拟保存地址
+    // 准备请求数据（字段名映射）
+    const requestData = {
+      id: this.data.formData.id,
+      contactName: name,
+      contactPhone: phone,
+      province: province,
+      city: city,
+      district: district,
+      detailAddress: detail,
+      isDefault: this.data.formData.isDefault ? 1 : 0
+    };
+    
     wx.showLoading({
       title: '保存中...'
     });
     
-    setTimeout(() => {
-      wx.hideLoading();
-      wx.showToast({
-        title: this.data.isEditing ? '地址已更新' : '地址已添加',
-        icon: 'success'
-      });
-      
-      // 返回上一页
-      setTimeout(() => {
-        wx.navigateBack();
-      }, 1500);
-    }, 1000);
+    // 调用后端API
+    const url = this.data.isEditing ? '/address/update' : '/address/add';
+    const method = this.data.isEditing ? 'PUT' : 'POST';
+    
+    wx.request({
+      url: app.globalData.baseUrl + url,
+      method: method,
+      data: requestData,
+      header: {
+        'Content-Type': 'application/json',
+        'token': app.globalData.token
+      },
+      success: (res) => {
+        wx.hideLoading();
+        
+        if (res.data.code === 200) {
+          wx.showToast({
+            title: this.data.isEditing ? '地址已更新' : '地址已添加',
+            icon: 'success'
+          });
+          
+          // 返回上一页
+          setTimeout(() => {
+            wx.navigateBack();
+          }, 1500);
+        } else {
+          wx.showToast({
+            title: res.data.message || '保存失败',
+            icon: 'none'
+          });
+        }
+      },
+      fail: (err) => {
+        wx.hideLoading();
+        wx.showToast({
+          title: '网络请求失败',
+          icon: 'none'
+        });
+        console.error('保存地址失败:', err);
+      }
+    });
   },
 
   // 跳转到登录页面

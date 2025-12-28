@@ -19,10 +19,12 @@
     <!-- 所在地区 -->
     <view class="form-item">
       <text class="form-label">所在地区</text>
-      <view class="region-select">
-        <input class="form-input" placeholder="请选择所在地区" value="{{formData.province}}{{formData.city}}{{formData.district}}" disabled></input>
-        <view class="select-arrow">▼</view>
-      </view>
+      <picker mode="region" value="{{region}}" bindchange="onRegionChange" custom-item="{{customItem}}">
+        <view class="region-select">
+          <input class="form-input" placeholder="请选择所在地区" value="{{formData.province}} {{formData.city}} {{formData.district}}" disabled></input>
+          <view class="select-arrow">▼</view>
+        </view>
+      </picker>
     </view>
 
     <!-- 详细地址 -->

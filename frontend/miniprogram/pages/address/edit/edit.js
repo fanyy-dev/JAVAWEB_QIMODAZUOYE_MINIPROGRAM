@@ -12,7 +12,9 @@ Page({
       detail: '',
       isDefault: false
     },
-    isEditing: false
+    isEditing: false,
+    region: ['', '', ''],  // 地区选择器默认值
+    customItem: '全部'  // 自定义选项
   },
 
   onLoad(options) {
@@ -45,7 +47,10 @@ Page({
     
     // 模拟网络请求延迟
     setTimeout(() => {
-      this.setData({ formData: mockAddress });
+      this.setData({ 
+        formData: mockAddress,
+        region: [mockAddress.province, mockAddress.city, mockAddress.district]  // 初始化地区选择器
+      });
     }, 500);
   },
 
@@ -54,6 +59,18 @@ Page({
     const { field } = e.currentTarget.dataset;
     const { value } = e.detail;
     this.setData({ [`formData.${field}`]: value });
+  },
+
+  // 地区选择器变化
+  onRegionChange(e) {
+    const [province, city, district] = e.detail.value;
+    this.setData({
+      region: e.detail.value,
+      'formData.province': province,
+      'formData.city': city,
+      'formData.district': district
+    });
+    console.log('选择地区:', province, city, district);
   },
 
   // 切换默认地址
